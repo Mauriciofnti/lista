@@ -1,47 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>To do list</title>
+    <style>
+        html {
+            background-color: #f0f0f0;
+        }
+
+        section {
+            text-align: center;
+        }
+
+        section>div {
+            /* border: 1px solid #919191; */
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 28px;
+            min-height: 150px;
+            margin: 0 10%;
+            box-shadow: #9a9a9a 5px 5px 15px;
+        }
+
+        form {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        form input {
+            border: none;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            padding: 8px;
+            width: 50%;
+            box-shadow: #9a9a9a 3px 3px 5px;
+            margin-left: 40px;
+        }
+
+        button {
+            background-color: #0059ff;
+            color: #fff;
+            border-radius: 5px;
+            border: none;
+            padding: 5px 15px;
+            box-sizing: border-box;
+            border: 1px solid rgba(0, 0, 0, 0);
+        }
+
+        label:hover,.remove:hover, .edit:hover {
+            cursor: pointer;
+        }
+
+        button:hover {
+            cursor: pointer;
+            border: 1px solid #000;
+            transition: all .5s ease;
+        }
+
+        li {
+            list-style-type: none;
+            display: flex;
+            justify-content: space-between;
+            box-shadow: #9a9a9a 1px 4px 3px;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin: 5px 0;
+        }
+
+        li:hover {
+            background-color: #96b2ff;
+            transition: all .2s ease;
+        }
+
+        .remove {
+            margin-right: 10px;
+            color: #f71212;
+        }
+
+        .edit {
+            color: #0044ff;
+        }
+
+        label {
+            user-select: none;
+        }
+    </style>
 </head>
+
 <body>
     <main>
         <section>
-            <h1>Lista de tarefas</h1>
-            <form action="#">
-                <input type="text" class="input">
-                <button id="button">Add</button>
-            </form>
-            <ul id="lista">
-            </ul>
+            <h1>To Do List</h1>
+            <div>
+                <form action="#">
+                    <input type="text" class="input" placeholder="Add new task">
+                    <button id="button">Add</button>
+                </form>
+                <ul id="lista">
+                    <!-- <li>asdadad</li>
+                    <li>asdadad</li>
+                    <li>asdadad</li> -->
+                </ul>
+            </div>
         </section>
     </main>
 
     <script>
         let button = document.querySelector("button");
-        button.addEventListener("click", function(evt){
+        button.addEventListener("click", function (evt) {
             evt.preventDefault();
             let campo = document.querySelector("input");
-            let lista = document.querySelector("#lista");
-            let item = document.createElement("li");
-            item.innerHTML = "<span class='texto'>" + campo.value + "</span><span class ='remover'>Remover</span><span class ='editar'>Editar</span>";
-            lista.appendChild(item);
-            console.log(item);
-            console.log("message");
+            if (campo.value) {
+                let campoid = campo.value + Date.now()
+                console.log(campoid)
+                let lista = document.querySelector("#lista");
+                let item = document.createElement("li");
+                item.innerHTML = "<div><input type='checkbox' class='check' id='" + campoid + "'><label for='" + campoid + "' class='texto' id=''>" + campo.value + "</label></div>" +
+                    "<div><span class ='remove'>Delete</span><span class ='edit'>Edit</span></div>";
+                lista.appendChild(item);
+                console.log(item);
+                console.log("message");
+                campo.focus()
+            } else {
+                campo.focus()
+            }
         });
         let lista = document.querySelector("#lista");
-        lista.addEventListener('click', function(evt){
+        lista.addEventListener('click', function (evt) {
             let elemento = evt.target;
             console.log(elemento.className);
-            if(elemento.className == 'remover'){
-                elemento.parentElement.remove();
-            } else if (elemento.className == 'editar'){
-                elemento.parentElement.querySelector(".texto").contentEditable = true;
-                elemento.parentElement.querySelector(".texto").focus();
+            if (elemento.className == 'remove') {
+                elemento.parentElement.parentElement.remove();
+            } else if (elemento.className == 'edit') {
+                elemento.parentElement.parentElement.querySelector(".texto").contentEditable = true;
+                elemento.parentElement.parentElement.querySelector(".texto").focus();
+            } else if (elemento.className == 'check') {
+                if (elemento.checked) {
+                    console.log(evt.target.id)
+                    elemento.parentElement.parentElement.querySelector(".texto").style.textDecoration = "line-through";
+                } else {
+                    elemento.parentElement.parentElement.querySelector(".texto").style.textDecoration = "none";
+                }
             }
 
-        })
+        });
+
+
+
     </script>
 </body>
+
 </html>
